@@ -1,8 +1,5 @@
 /* The Animal Guessing Game, Part 1
-    CS 1337 HOMEWORK 6
-    By: Gowtham Santha Kumar
-    Class: Dr. Doug DeGroot’s C++ Class
-
+    Class: C++ Class
 */
 #include <iostream>
 #include <fstream>
@@ -28,35 +25,34 @@ void saveTheAnimalTree(animalNode*);
 void readFromFile(ifstream &, animalNode*, animalNode* &);
 
 int main(){
-    char ans, choice; // User instructions
-    string temp, guesstemp;     // temporary string to store the guess for replacement.
-    string guess, question; // Temporarily stores the guess and question for each node
+    char ans, choice;                    // User instructions
+    string temp, guesstemp;              // temporary string to store the guess for replacement.
+    string guess, question;              // Temporarily stores the guess and question for each node
     cout << "you want to read from file? (y/n)" << endl;
     cin >> ans;
-
-
-    animalNode* root; // To store the address of the root animal node
-    root = NULL;   // Initially set it to null pointer
+    
+    animalNode* root;                    // To store the address of the root animal node
+    root = NULL;                         // Initially set it to null pointer
     animalNode* tempnode;
-    tempnode = NULL; // Temporary node that stores the successive pointers. Initially set it to null pointer
-    if(ans != 'y')
-    {
-        root = insertNewNode(root, "lizard", question);   //create the root (first) animal node and initialize it with lizard guess
+    tempnode = NULL;                     // Temporary node that stores the successive pointers. Initially set it to null pointer
+    
+    if(ans != 'y'){
+        //create the root (first) animal node and initialize it with lizard guess
+        root = insertNewNode(root, "lizard", question);              
         cout << "Instructions: 1. Answer by pressing (y) key or (n) key.\n"
              << "              2. Type the question and press enter.\n\n";
-            // At this point the root has the (points to the) address of the first new node which contains the guess data and an empty question member.
+               
+/* At this point the root has the (points to the) address of the first new node which contains the guess data and an empty question 
+  member. */                                  
        do{
-            cout << "Play  \"GUESS THE ANIMAL!!!\" " << endl;  // Display the title
-            tempnode =  play(root,guess, question, ans, guesstemp); // Call the play function
-           // cout << guesstemp << endl; debug
+            cout << "Play  \"GUESS THE ANIMAL!!!\" " << endl;            // Display the title
+            tempnode =  play(root,guess, question, ans, guesstemp);      // Call the play function
             repeat(tempnode, guesstemp, question, temp);
-           // cout << guess.length() << question.length() << endl;
-           // cout << root->guess.length() << root->question.length()<< root->yesAnswer->guess << " " << root->noAnswer->guess << " " << endl;
+           
             cout << "\nPlay  \"GUESS THE ANIMAL!!!\" " << endl;
             cout << "\nDo you want to play again? (y/n)\n";
             cin >> choice;
         }while(tolower(choice) != 'n');
-
         ofstream outputfile (animalFileName_SAVE.c_str());
         if(outputfile)
         {
@@ -74,7 +70,6 @@ int main(){
         }else{
             readFromFile(inputfile,root, temp);
             cout << temp << " " <<temp->guess << " " << temp->question << endl;
-
         }
         inputfile.close();
     }
@@ -87,13 +82,13 @@ animalNode* newNode(string guess1, string question1)
     newNode->guess = guess1;
     newNode->question = question1;
     newNode->yesAnswer = newNode->noAnswer = NULL;
-    //return the address of the new node that was created dynamically
+                                        //return the address of the new node that was created dynamically
     return newNode;
 }
 // This function inserts the new node recursively
 animalNode* insertNewNode(animalNode* root, string guess1, string question1)
 {
-    if(!root) // if it is a null pointer then create the new node.
+    if(!root)                           // if it is a null pointer then create the new node.
     {
         root = newNode(guess1, question1);
     }
@@ -107,16 +102,15 @@ animalNode* insertNewNode(animalNode* root, string guess1, string question1)
 // This function changes the data.
 void changeData(animalNode* root, string guess, string question, string temp){
     char check;
-    root = insertNewNode(root, "", ""); //inserts 2 empty nodes
-    temp = root->guess;  // Assigns the guess that was in the curnode to a temporary node
-    //cout << "stored in root guess " << root->guess << " "root->guess.length()<< endl;
+    root = insertNewNode(root, "", "");                         //inserts 2 empty nodes
+    temp = root->guess;                                         // Assigns the guess that was in the curnode to a temporary node
     root->guess.clear(); // Clear the root node's guess
-    //cout << "Answer by forming a question that can be used to differentiate your animal to the one I guessed.\n";
+    
      cin.ignore();
      cout << "What is a yes or no question that I can use to tell a " << temp << " from a " << guess  << " ?"<< endl;;
      getline(cin, question);
-     root->question = question; // Get the question and store it in the original node
-      //ask the user whether the answer to the question for the new animal is yes or no
+     root->question = question;       // Get the question and store it in the original node
+                                     //ask the user whether the answer to the question for the new animal is yes or no
      cout << "For the " << guess << " is the answer yes or no (y/n)" << endl;
      cin >> check;
      // adds the guess into the appropriate boxes
@@ -124,34 +118,32 @@ void changeData(animalNode* root, string guess, string question, string temp){
     {
        root->yesAnswer->guess = guess;
        root->noAnswer->guess = temp;
-       //return root->yesAnswer;
     }
     else
     {
         root->noAnswer->guess = guess;
         root->yesAnswer->guess = temp;
-        //return root->noAnswer;
     }
 }
 // This function lets the user play the game
 animalNode* play(animalNode* root, string guess1, string question, char ans, string &guesstemp)
 {
-    animalNode *tempnode; // for the temporary node
-    if(root->question.empty()) // This is a guess node
+    animalNode *tempnode;                   // for the temporary node
+    if(root->question.empty())              // This is a guess node
     {
         cout << "Think of an animal and press enter when ready" << endl;
         cin.ignore();
         cout << "is it a " << root->guess << " ? (y/n)" << endl;
         cin >> ans;
-        if(tolower(ans) == 'y'){ // The computer wins
+        if(tolower(ans) == 'y'){           // The computer wins
             cout << "I WIN!!!! The animal is " << root->guess << endl;
             exit(0);
         }
-        else{ // If it is a new animal that the program does not know
+        else{                            // If it is a new animal that the program does not know
             cout << "Teach me about the animal you're thinking of";
             cout << "\nWhat is your animal? " << endl;
             cin >> guesstemp;
-            if((root->noAnswer) != NULL){ // For future nodes
+            if((root->noAnswer) != NULL){    // For future nodes
                 tempnode = root->noAnswer;
                 return tempnode;
             }
@@ -160,9 +152,9 @@ animalNode* play(animalNode* root, string guess1, string question, char ans, str
             }
         }
     }
-    else if(root->guess.empty())// This is a question node for the yes answer
+    else if(root->guess.empty())            // This is a question node for the yes answer
     {
-        cout << root->question << endl; // Display the question and get the user's input
+        cout << root->question << endl;     // Display the question and get the user's input
         cin >> ans;
         if(tolower(ans) == 'y') {
                 if(!(root->yesAnswer->guess.empty())){  //For two question nodes back to back
@@ -317,3 +309,7 @@ void readFromFile(ifstream &inputfile, animalNode* curNode, animalNode* &temp)
 }
 
 
+//51 cout << guess.length() << question.length() << endl;
+//52 cout << root->guess.length() << root->question.length()<< root->yesAnswer->guess << " " << root->noAnswer->guess << " " << endl;
+//107cout << "stored in root guess " << root->guess << " "root->guess.length()<< endl;
+//108cout << "Answer by forming a question that can be used to differentiate your animal to the one I guessed.\n";
