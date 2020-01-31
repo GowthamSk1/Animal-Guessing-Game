@@ -221,27 +221,7 @@ void repeat(animalNode* root, string guess, string question, string temp){
         changeData(root, guess, question, temp);
     }
 }
-/*  To debug IGNORE
-    else if(guess1.empty())
-    {
-         // then it is a question node guess member is blank and both yes and no will point
-                               // to child nodes
-        root->noAnswer = insertNode(root->noAnswer,guess1,question1);
-    }
-    else if(question1.empty()) //it is a guess node
-    {
-        root->yesAnswer = insertNode(root->yesAnswer,guess1,question1);
-    }
 
-
-    }
-    else if((animalNode->question)== "")
-    // then it is a guess node the ques member is blank and both child pointers
-                                        // will be null pointers (leafnodes)
-    {
-
-    }
-    */
 
 // printTheTree - print the tree to the output stream in pre-order manner
 void printPreorder(ostream &outputStream,animalNode* curNode)
@@ -279,23 +259,13 @@ void saveTheAnimalTree(animalNode* root){
     }
 }
 
-
 void readFromFile(ifstream &inputfile, animalNode* curNode, animalNode* &temp)
-{                                       //null
+{                                       
     string tempor;
     getline(inputfile, tempor, '\n');
-//    inputfile.seekg(0,ios::end);
-//    if(inputfile.tellg() == 0)
-//    {
-//        cout << "File is empty exit" << endl;
-//        exit(0);
-//    }
-//    else
-//    {
-        if(tempor == "G") // it is
+        if(tempor == "G")
         {
             getline(inputfile,tempor, '\n');
-                        // Creates a new node)
             temp = insertNewNode(curNode, tempor, "");
         }else if(tempor == "Q"){
             getline(inputfile, tempor, '\n');
@@ -305,11 +275,42 @@ void readFromFile(ifstream &inputfile, animalNode* curNode, animalNode* &temp)
             readFromFile(inputfile,curNode->noAnswer, temp);
         }
         temp = curNode;
-//    }
+    }
 }
 
 
+/* 204 To debug IGNORE
+    else if(guess1.empty())
+    {
+         // then it is a question node guess member is blank and both yes and no will point
+                               // to child nodes
+        root->noAnswer = insertNode(root->noAnswer,guess1,question1);
+    }
+    else if(question1.empty()) //it is a guess node
+    {
+        root->yesAnswer = insertNode(root->yesAnswer,guess1,question1);
+    }
+
+
+    }
+    else if((animalNode->question)== "")
+    // then it is a guess node the ques member is blank and both child pointers
+                                        // will be null pointers (leafnodes)
+    {
+
+    }
+    */
+
+//  204  inputfile.seekg(0,ios::end);
+//    if(inputfile.tellg() == 0)
+//    {
+//        cout << "File is empty exit" << endl;
+//        exit(0);
+//    }
+//    else
+//    {
 //51 cout << guess.length() << question.length() << endl;
 //52 cout << root->guess.length() << root->question.length()<< root->yesAnswer->guess << " " << root->noAnswer->guess << " " << endl;
 //107cout << "stored in root guess " << root->guess << " "root->guess.length()<< endl;
 //108cout << "Answer by forming a question that can be used to differentiate your animal to the one I guessed.\n";
+Z
